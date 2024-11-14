@@ -45,7 +45,7 @@ const StyledButton = styled.button<Props>`
       case 'secondary':
         return css`
           background-color: transparent;
-          color: white;
+          color: ${props.theme.colors.primary};
           border: 1px solid ${props.theme.colors.primary};
           &:hover {
             background-color: ${props.theme.colors.hoverTransparent};
