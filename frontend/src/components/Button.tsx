@@ -1,10 +1,11 @@
 import styled, { css, keyframes } from 'styled-components';
+import StarIcon from './StarIcon';
 
 type Props = {
   variant?: 'primary' | 'secondary';
   isLoading?: boolean;
-  icon?: React.ReactNode;
   children: React.ReactNode;
+  onClick?: () => void;
 }
 
 const spin = keyframes`
@@ -39,6 +40,8 @@ const StyledButton = styled.button<Props>`
   font-size: 14px;
   line-height: 24px;
   font-weight: 600;
+  width: fit-content;
+  cursor: pointer;
 
   ${props => {
     switch (props.variant) {
@@ -69,11 +72,17 @@ const StyledButton = styled.button<Props>`
   }
 `;
 
+const IconContainer = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: ${({ theme }) => theme.spacing(1)};
+`;
+
 const Button: React.FC<Props> = ({
   children,
   variant = 'primary',
   isLoading = false,
-  icon,
   ...props
 }) => {
   return (
@@ -83,7 +92,7 @@ const Button: React.FC<Props> = ({
       {...props}
     >
       {children}
-      {icon && !isLoading && <span>{icon}</span>}
+      {!isLoading && <IconContainer><StarIcon /></IconContainer>}
       {isLoading && <LoadingSpinner />}
     </StyledButton>
   );

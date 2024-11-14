@@ -5,7 +5,7 @@ type Props = {
   label: string;
   value: string;
   checked: boolean;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: () => void;
 }
 
 const RadioContainer = styled.div`
@@ -54,7 +54,7 @@ const Label = styled.span`
 
 const RadioButton: React.FC<Props> = ({ label, value, checked, onChange }) => {
   return (
-    <RadioContainer>
+    <RadioContainer onClick={onChange}>
       <HiddenRadio
         value={value}
         checked={checked}
