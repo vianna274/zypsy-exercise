@@ -1,17 +1,14 @@
-import { ThemeProvider } from 'styled-components';
-import theme from './theme';
-import Button from './components/Button';
-import RadioButton from './components/RadioButton';
+import { ThemeProvider } from "styled-components";
+import theme from "./theme";
+import Posts from "./pages/posts/Posts";
+import { PostsProvider } from "./pages/posts/context";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <>
-        <Button>Click me</Button>
-        <Button variant="secondary">Click me</Button>
-        <RadioButton label="Radio button" value="radio" checked={false} onChange={() => {}} />
-        <RadioButton label="Radio button" value="radio" checked={true} onChange={() => {}} />
-      </>
+      <PostsProvider>
+        <Posts />
+      </PostsProvider>
     </ThemeProvider>
   );
 }

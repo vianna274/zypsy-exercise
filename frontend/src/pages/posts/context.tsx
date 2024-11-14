@@ -1,22 +1,26 @@
 import { createContext, useState, useContext, ReactNode } from "react";
 
+export type PostResponse = {
+  id: string;
+  description: string;
+  date: string;
+  categories: string[];
+}
+
 export type Category = {
   id: string;
   name: string;
   favorite: boolean;
 };
 
-export type Post = {
-  id: string;
-  description: string;
-  date: string;
+export type Post = Omit<PostResponse, "categories"> & {
   categories: Category[];
 };
 
 type PostsContextType = {
   posts: Post[];
   categories: Category[];
-  setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
+  setPosts: (posts: PostResponse[]) => void;
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
   selectedCategory: Category | undefined;
   setSelectedCategory: React.Dispatch<
@@ -33,15 +37,24 @@ export const PostsProvider: React.FC<{ children: ReactNode }> = ({
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category>();
 
+  const enhancedSetPosts = (posts: PostResponse[]) => {
+    const enhancedPosts = posts.map(post => ({
+      ...post,
+      categories: post.categories.map(categoryId => categories.find(c => c.id === categoryId)!),
+    }));
+
+    setPosts(enhancedPosts);
+  };
+
   return (
     <PostsContext.Provider
       value={{
         posts,
         categories,
-        setPosts,
         setCategories,
         selectedCategory,
         setSelectedCategory,
+        setPosts: enhancedSetPosts,
       }}
     >
       {children}
