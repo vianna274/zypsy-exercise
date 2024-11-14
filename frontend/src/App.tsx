@@ -1,7 +1,7 @@
-import { ThemeProvider } from "styled-components";
-import theme from "./theme";
-import Posts from "./pages/posts/Posts";
-import { PostsProvider } from "./pages/posts/context";
+import { ThemeProvider } from 'styled-components';
+import theme from './theme';
+import Posts from './pages/posts/Posts';
+import { PostsProvider } from './pages/posts/context';
 
 function App() {
   return (

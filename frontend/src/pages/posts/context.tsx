@@ -4,7 +4,7 @@ import {
   useContext,
   ReactNode,
   useEffect,
-} from "react";
+} from 'react';
 
 export type PostResponse = {
   id: string;
@@ -19,7 +19,7 @@ export type Category = {
   favorite: boolean;
 };
 
-export type Post = Omit<PostResponse, "categories"> & {
+export type Post = Omit<PostResponse, 'categories'> & {
   categories: Category[];
 };
 
@@ -46,7 +46,7 @@ export const PostsProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     if (loaded || !categories.length) return;
 
-    const selectedCategoryId = sessionStorage.getItem("selectedCategoryId");
+    const selectedCategoryId = sessionStorage.getItem('selectedCategoryId');
     const selectedCategory = categories.find(
       (c) => c.id === selectedCategoryId
     );
@@ -58,7 +58,7 @@ export const PostsProvider: React.FC<{ children: ReactNode }> = ({
 
   const enhancedSetSelectedCategory = (category: Category) => {
     setSelectedCategory(category);
-    sessionStorage.setItem("selectedCategoryId", category.id);
+    sessionStorage.setItem('selectedCategoryId', category.id);
   };
 
   const enhancedSetPosts = (posts: PostResponse[]) => {
@@ -101,11 +101,12 @@ export const PostsProvider: React.FC<{ children: ReactNode }> = ({
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const usePosts = (): PostsContextType => {
   const context = useContext(PostsContext);
 
   if (!context) {
-    throw new Error("usePosts must be used within a PostsProvider");
+    throw new Error('usePosts must be used within a PostsProvider');
   }
 
   return context;

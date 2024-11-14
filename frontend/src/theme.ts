@@ -9,9 +9,9 @@ const theme: DefaultTheme = {
     surface: '#FFFFFF',
     foreground: '#252525',
     foregroundSecondary: '#78716C',
-    accent: '#E5E7EB'
+    accent: '#E5E7EB',
   },
-  spacing: (factor: number) => `${8 * factor}px`, 
+  spacing: (factor: number) => `${8 * factor}px`,
   fonts: {
     main: 'Arial, sans-serif',
   },

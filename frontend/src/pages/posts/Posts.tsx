@@ -1,6 +1,6 @@
-import { styled } from "styled-components";
-import Content from "./Content";
-import Sidebar from "./Sidebar";
+import { styled } from 'styled-components';
+import Content from './Content';
+import Sidebar from './Sidebar';
 
 const PostsContainer = styled.div`
   display: flex;

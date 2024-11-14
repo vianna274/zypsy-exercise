@@ -1,9 +1,9 @@
-import React from "react";
-import Button from "../../components/Button";
-import { format } from "date-fns";
-import { Category, Post, usePosts } from "./context";
-import { styled } from "styled-components";
-import axiosInstance from "../../utils/axiosConfig";
+import React from 'react';
+import Button from '../../components/Button';
+import { format } from 'date-fns';
+import { Category, Post, usePosts } from './context';
+import { styled } from 'styled-components';
+import axiosInstance from '../../utils/axiosConfig';
 
 const Container = styled.div`
   padding-bottom: ${({ theme }) => theme.spacing(4)};
@@ -58,7 +58,7 @@ const PostCard: React.FC<Props> = ({ post }) => {
 
   return (
     <Container>
-      <DateText>{format(new Date(post.date), "EEEE, MMMM do yyyy")}</DateText>
+      <DateText>{format(new Date(post.date), 'EEEE, MMMM do yyyy')}</DateText>
       <DescriptionText>{post.description}</DescriptionText>
       <CategoriesContainer>
         {post.categories.map((category) => (

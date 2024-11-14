@@ -1,16 +1,16 @@
-import styled, { css } from "styled-components";
-import StarIcon from "./StarIcon";
-import theme from "../theme";
+import styled, { css } from 'styled-components';
+import StarIcon from './StarIcon';
+import theme from '../theme';
 
 type Props = {
-  variant?: "primary" | "secondary";
+  variant?: 'primary' | 'secondary';
   children: React.ReactNode;
   favorite: boolean;
   onClick?: () => void;
   onIconClick?: () => void;
 };
 
-const StyledButton = styled.button<Omit<Props, "favorite">>`
+const StyledButton = styled.button<Omit<Props, 'favorite'>>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,7 +28,7 @@ const StyledButton = styled.button<Omit<Props, "favorite">>`
 
   ${(props) => {
     switch (props.variant) {
-      case "secondary":
+      case 'secondary':
         return css`
           background-color: transparent;
           color: ${props.theme.colors.primary};
@@ -64,7 +64,7 @@ const IconContainer = styled.span`
 
 const Button: React.FC<Props> = ({
   children,
-  variant = "primary",
+  variant = 'primary',
   favorite = false,
   onIconClick,
   ...props
@@ -80,14 +80,14 @@ const Button: React.FC<Props> = ({
       <IconContainer onClick={handleIconClick}>
         <StarIcon
           stroke={
-            variant === "primary" ? theme.colors.accent : theme.colors.primary
+            variant === 'primary' ? theme.colors.accent : theme.colors.primary
           }
           fill={
             favorite
-              ? variant === "primary"
+              ? variant === 'primary'
                 ? theme.colors.accent
                 : theme.colors.primary
-              : "transparent"
+              : 'transparent'
           }
         />
       </IconContainer>

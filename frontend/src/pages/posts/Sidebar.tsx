@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo } from "react";
-import RadioButton from "../../components/RadioButton";
-import axiosInstance from "../../utils/axiosConfig";
-import Button from "../../components/Button";
-import styled from "styled-components";
-import { Category, usePosts } from "./context";
+import { useState, useEffect, useMemo } from 'react';
+import RadioButton from '../../components/RadioButton';
+import axiosInstance from '../../utils/axiosConfig';
+import Button from '../../components/Button';
+import styled from 'styled-components';
+import { Category, usePosts } from './context';
 
 const SidebarContainer = styled.div`
   width: 320px;
@@ -43,7 +43,7 @@ const CategoriesContainer = styled.div`
 `;
 
 const Sidebar: React.FC = () => {
-  const [filter, setFilter] = useState<"all" | "favorite">("all");
+  const [filter, setFilter] = useState<'all' | 'favorite'>('all');
   const {
     categories,
     setCategories,
@@ -54,9 +54,9 @@ const Sidebar: React.FC = () => {
 
   useEffect(() => {
     axiosInstance
-      .get<Category[]>("/categories")
+      .get<Category[]>('/categories')
       .then((response) => setCategories(response.data))
-      .catch((error) => console.error("Error fetching categories:", error));
+      .catch((error) => console.error('Error fetching categories:', error));
   }, [setCategories]);
 
   const handleCategoryChange = (category: Category) => {
@@ -74,7 +74,7 @@ const Sidebar: React.FC = () => {
 
   const filteredCategories = useMemo(
     () =>
-      filter === "favorite"
+      filter === 'favorite'
         ? categories.filter((category) => category.favorite)
         : categories,
     [filter, categories]
@@ -88,14 +88,14 @@ const Sidebar: React.FC = () => {
           <RadioButton
             value="all"
             label="All Categories"
-            checked={filter === "all"}
-            onChange={() => setFilter("all")}
+            checked={filter === 'all'}
+            onChange={() => setFilter('all')}
           />
           <RadioButton
             value="favorite"
             label="Favorite Categories"
-            checked={filter === "favorite"}
-            onChange={() => setFilter("favorite")}
+            checked={filter === 'favorite'}
+            onChange={() => setFilter('favorite')}
           />
         </FiltersContainer>
         <CategoriesContainer>
@@ -105,7 +105,7 @@ const Sidebar: React.FC = () => {
               onClick={() => handleCategoryChange(category)}
               favorite={category.favorite}
               variant={
-                selectedCategory?.id === category.id ? "secondary" : "primary"
+                selectedCategory?.id === category.id ? 'secondary' : 'primary'
               }
               onIconClick={() => handleFavoriteClick(category)}
             >
