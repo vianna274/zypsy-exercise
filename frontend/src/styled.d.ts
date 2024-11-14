@@ -9,6 +9,7 @@ declare module 'styled-components' {
       primaryBackground: string;
       surface: string;
       foreground: string;
+      foregroundSecondary: string;
       accent: string;
     };
     spacing: (factor: number) => string;
