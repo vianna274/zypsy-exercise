@@ -40,11 +40,17 @@ const CategoriesContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1.5)};
-`;  
+`;
 
 const Sidebar: React.FC = () => {
   const [filter, setFilter] = useState<"all" | "favorite">("all");
-  const { categories, setCategories, setSelectedCategory, selectedCategory } = usePosts();
+  const {
+    categories,
+    setCategories,
+    setSelectedCategory,
+    selectedCategory,
+    enhancedUpdateCategory,
+  } = usePosts();
 
   useEffect(() => {
     axiosInstance
@@ -55,6 +61,15 @@ const Sidebar: React.FC = () => {
 
   const handleCategoryChange = (category: Category) => {
     setSelectedCategory(category);
+  };
+
+  const handleFavoriteClick = (category: Category) => {
+    axiosInstance
+      .put<Category>(`/categories/${category.id}`, {
+        ...category,
+        favorite: !category.favorite,
+      })
+      .then((response) => enhancedUpdateCategory(response.data));
   };
 
   const filteredCategories = useMemo(
@@ -84,16 +99,19 @@ const Sidebar: React.FC = () => {
           />
         </FiltersContainer>
         <CategoriesContainer>
-        {filteredCategories.map((category) => (
-          <Button
-            key={category.id}
-            onClick={() => handleCategoryChange(category)}
-            favorite={category.favorite}
-            variant={selectedCategory?.id === category.id ? "secondary" : "primary"}
-          >
-            {category.name}
-          </Button>
-        ))}
+          {filteredCategories.map((category) => (
+            <Button
+              key={category.id}
+              onClick={() => handleCategoryChange(category)}
+              favorite={category.favorite}
+              variant={
+                selectedCategory?.id === category.id ? "secondary" : "primary"
+              }
+              onIconClick={() => handleFavoriteClick(category)}
+            >
+              {category.name}
+            </Button>
+          ))}
         </CategoriesContainer>
       </SidebarContent>
     </SidebarContainer>

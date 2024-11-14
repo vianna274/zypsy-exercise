@@ -7,6 +7,7 @@ type Props = {
   children: React.ReactNode;
   favorite: boolean;
   onClick?: () => void;
+  onIconClick?: () => void;
 };
 
 const StyledButton = styled.button<Omit<Props, "favorite">>`
@@ -65,13 +66,18 @@ const Button: React.FC<Props> = ({
   children,
   variant = "primary",
   favorite = false,
+  onIconClick,
   ...props
 }) => {
+  const handleIconClick = (e: React.MouseEvent<HTMLSpanElement>) => {
+    e.stopPropagation();
+    onIconClick?.();
+  };
+
   return (
     <StyledButton variant={variant} {...props}>
       {children}
-
-      <IconContainer>
+      <IconContainer onClick={handleIconClick}>
         <StarIcon
           stroke={
             variant === "primary" ? theme.colors.accent : theme.colors.primary
