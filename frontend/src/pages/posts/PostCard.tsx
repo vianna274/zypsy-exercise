@@ -3,6 +3,7 @@ import Button from "../../components/Button";
 import { format } from "date-fns";
 import { Category, Post, usePosts } from "./context";
 import { styled } from "styled-components";
+import axiosInstance from "../../utils/axiosConfig";
 
 const Container = styled.div`
   padding-bottom: ${({ theme }) => theme.spacing(4)};
@@ -40,21 +41,33 @@ type Props = {
 };
 
 const PostCard: React.FC<Props> = ({ post }) => {
-  const { setSelectedCategory } = usePosts();
+  const { setSelectedCategory, enhancedUpdateCategory } = usePosts();
 
   const handleCategoryClick = (category: Category) => {
     setSelectedCategory(category);
   };
 
+  const handleFavoriteClick = (category: Category) => {
+    axiosInstance
+      .put<Category>(`/categories/${category.id}`, {
+        ...category,
+        favorite: !category.favorite,
+      })
+      .then((response) => enhancedUpdateCategory(response.data));
+  };
+
   return (
     <Container>
       <DateText>{format(new Date(post.date), "EEEE, MMMM do yyyy")}</DateText>
-      <DescriptionText>
-        {post.description}
-      </DescriptionText>
+      <DescriptionText>{post.description}</DescriptionText>
       <CategoriesContainer>
         {post.categories.map((category) => (
-          <Button key={category.id} favorite={category.favorite} onClick={() => handleCategoryClick(category)}>
+          <Button
+            key={category.id}
+            favorite={category.favorite}
+            onClick={() => handleCategoryClick(category)}
+            onIconClick={() => handleFavoriteClick(category)}
+          >
             {category.name}
           </Button>
         ))}

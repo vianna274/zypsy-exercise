@@ -26,6 +26,7 @@ type PostsContextType = {
   setSelectedCategory: React.Dispatch<
     React.SetStateAction<Category | undefined>
   >;
+  enhancedUpdateCategory: (category: Category) => void;
 };
 
 const PostsContext = createContext<PostsContextType | undefined>(undefined);
@@ -46,6 +47,14 @@ export const PostsProvider: React.FC<{ children: ReactNode }> = ({
     setPosts(enhancedPosts);
   };
 
+  const enhancedUpdateCategory = (category: Category) => {
+    setCategories(categories.map(c => c.id === category.id ? category : c));
+    setPosts(posts.map(p => ({
+      ...p,
+      categories: p.categories.map(c => c.id === category.id ? category : c),
+    })));
+  };
+
   return (
     <PostsContext.Provider
       value={{
@@ -54,6 +63,7 @@ export const PostsProvider: React.FC<{ children: ReactNode }> = ({
         setCategories,
         selectedCategory,
         setSelectedCategory,
+        enhancedUpdateCategory,
         setPosts: enhancedSetPosts,
       }}
     >
