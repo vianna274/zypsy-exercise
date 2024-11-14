@@ -6,13 +6,11 @@ const PostsContainer = styled.div`
   display: flex;
 `;
 
-const Posts: React.FC = () => {
-  return (
-    <PostsContainer>
-      <Sidebar />
-      <Content />
-    </PostsContainer>
-  );
-};
+const Posts: React.FC = () => (
+  <PostsContainer>
+    <Sidebar />
+    <Content />
+  </PostsContainer>
+);
 
 export default Posts;

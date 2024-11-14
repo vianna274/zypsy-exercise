@@ -1,11 +1,17 @@
-import { createContext, useState, useContext, ReactNode } from "react";
+import {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  useEffect,
+} from "react";
 
 export type PostResponse = {
   id: string;
   description: string;
   date: string;
   categories: string[];
-}
+};
 
 export type Category = {
   id: string;
@@ -23,10 +29,8 @@ type PostsContextType = {
   setPosts: (posts: PostResponse[]) => void;
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
   selectedCategory: Category | undefined;
-  setSelectedCategory: React.Dispatch<
-    React.SetStateAction<Category | undefined>
-  >;
   enhancedUpdateCategory: (category: Category) => void;
+  setSelectedCategory: (category: Category) => void;
 };
 
 const PostsContext = createContext<PostsContextType | undefined>(undefined);
@@ -37,22 +41,47 @@ export const PostsProvider: React.FC<{ children: ReactNode }> = ({
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category>();
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (loaded || !categories.length) return;
+
+    const selectedCategoryId = sessionStorage.getItem("selectedCategoryId");
+    const selectedCategory = categories.find(
+      (c) => c.id === selectedCategoryId
+    );
+
+    setSelectedCategory(selectedCategory);
+    setLoaded(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categories]);
+
+  const enhancedSetSelectedCategory = (category: Category) => {
+    setSelectedCategory(category);
+    sessionStorage.setItem("selectedCategoryId", category.id);
+  };
 
   const enhancedSetPosts = (posts: PostResponse[]) => {
-    const enhancedPosts = posts.map(post => ({
+    const enhancedPosts = posts.map((post) => ({
       ...post,
-      categories: post.categories.map(categoryId => categories.find(c => c.id === categoryId)!),
+      categories: post.categories.map(
+        (categoryId) => categories.find((c) => c.id === categoryId)!
+      ),
     }));
 
     setPosts(enhancedPosts);
   };
 
   const enhancedUpdateCategory = (category: Category) => {
-    setCategories(categories.map(c => c.id === category.id ? category : c));
-    setPosts(posts.map(p => ({
-      ...p,
-      categories: p.categories.map(c => c.id === category.id ? category : c),
-    })));
+    setCategories(categories.map((c) => (c.id === category.id ? category : c)));
+    setPosts(
+      posts.map((p) => ({
+        ...p,
+        categories: p.categories.map((c) =>
+          c.id === category.id ? category : c
+        ),
+      }))
+    );
   };
 
   return (
@@ -62,8 +91,8 @@ export const PostsProvider: React.FC<{ children: ReactNode }> = ({
         categories,
         setCategories,
         selectedCategory,
-        setSelectedCategory,
         enhancedUpdateCategory,
+        setSelectedCategory: enhancedSetSelectedCategory,
         setPosts: enhancedSetPosts,
       }}
     >
