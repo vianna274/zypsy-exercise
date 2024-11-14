@@ -7,7 +7,6 @@ import { Category, usePosts } from "./context";
 
 const SidebarContainer = styled.div`
   width: 320px;
-  height: 100%;
   border-right: 1px solid ${({ theme }) => theme.colors.accent};
 `;
 
