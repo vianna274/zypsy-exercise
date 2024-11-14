@@ -1,12 +1,14 @@
-import styled, { css, keyframes } from 'styled-components';
-import StarIcon from './StarIcon';
+import styled, { css, keyframes } from "styled-components";
+import StarIcon from "./StarIcon";
+import theme from "../theme";
 
 type Props = {
-  variant?: 'primary' | 'secondary';
+  variant?: "primary" | "secondary";
   isLoading?: boolean;
   children: React.ReactNode;
+  favorite: boolean;
   onClick?: () => void;
-}
+};
 
 const spin = keyframes`
   from {
@@ -24,28 +26,28 @@ const LoadingSpinner = styled.div`
   border-top: 2px solid transparent;
   border-radius: 50%;
   animation: ${spin} 1s linear infinite;
-  margin-right: ${props => props.theme.spacing(1)};
+  margin-right: ${(props) => props.theme.spacing(1)};
 `;
 
 const StyledButton = styled.button<Props>`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: ${props => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   transition: all 0.2s ease;
-  padding-top: ${props => props.theme.spacing(1)};
-  padding-bottom: ${props => props.theme.spacing(1)};
-  padding-left: ${props => props.theme.spacing(3)};
-  padding-right: ${props => props.theme.spacing(2)};
+  padding-top: ${(props) => props.theme.spacing(1)};
+  padding-bottom: ${(props) => props.theme.spacing(1)};
+  padding-left: ${(props) => props.theme.spacing(3)};
+  padding-right: ${(props) => props.theme.spacing(2)};
   font-size: 14px;
   line-height: 24px;
   font-weight: 600;
   width: fit-content;
   cursor: pointer;
 
-  ${props => {
+  ${(props) => {
     switch (props.variant) {
-      case 'secondary':
+      case "secondary":
         return css`
           background-color: transparent;
           color: ${props.theme.colors.primary};
@@ -81,18 +83,27 @@ const IconContainer = styled.span`
 
 const Button: React.FC<Props> = ({
   children,
-  variant = 'primary',
+  variant = "primary",
   isLoading = false,
   ...props
 }) => {
   return (
-    <StyledButton
-      variant={variant}
-      isLoading={isLoading}
-      {...props}
-    >
+    <StyledButton variant={variant} isLoading={isLoading} {...props}>
       {children}
-      {!isLoading && <IconContainer><StarIcon /></IconContainer>}
+      {!isLoading && (
+        <IconContainer>
+          <StarIcon
+            stroke={variant === "primary" ? theme.colors.accent : theme.colors.primary}
+            fill={
+              props.favorite
+                ? variant === "primary"
+                  ? theme.colors.accent
+                  : theme.colors.primary
+                : "transparent"
+            }
+          />
+        </IconContainer>
+      )}
       {isLoading && <LoadingSpinner />}
     </StyledButton>
   );
