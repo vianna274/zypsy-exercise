@@ -3,9 +3,12 @@ import RadioButton from "../../components/RadioButton";
 import axiosInstance from "../../utils/axiosConfig";
 import Button from "../../components/Button";
 import styled from "styled-components";
+import { Category, usePosts } from "./context";
 
 const SidebarContainer = styled.div`
   width: 320px;
+  height: 100%;
+  border-right: 1px solid ${({ theme }) => theme.colors.accent};
 `;
 
 const SidebarContent = styled.div`
@@ -40,39 +43,16 @@ const CategoriesContainer = styled.div`
   gap: ${({ theme }) => theme.spacing(1.5)};
 `;  
 
-type Category = {
-  id: string;
-  name: string;
-  favorite: boolean;
-};
-
-type Post = {
-  id: string;
-  description: string;
-  date: string;
-  categories: Category[];
-};
-
 const Sidebar: React.FC = () => {
   const [filter, setFilter] = useState<"all" | "favorite">("all");
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<Category>();
+  const { categories, setCategories, setSelectedCategory, selectedCategory } = usePosts();
 
   useEffect(() => {
     axiosInstance
       .get<Category[]>("/categories")
       .then((response) => setCategories(response.data))
       .catch((error) => console.error("Error fetching categories:", error));
-  }, []);
-
-  // useEffect(() => {
-  //   if (!selectedCategory) return;
-
-  //   axiosInstance
-  //     .get<Post[]>("/posts")
-  //     .then((response) => setPosts(response.data))
-  //     .catch((error) => console.error("Error fetching posts:", error));
-  // }, [selectedCategory]);
+  }, [setCategories]);
 
   const handleCategoryChange = (category: Category) => {
     setSelectedCategory(category);
@@ -109,6 +89,8 @@ const Sidebar: React.FC = () => {
           <Button
             key={category.id}
             onClick={() => handleCategoryChange(category)}
+            favorite={category.favorite}
+            variant={selectedCategory?.id === category.id ? "secondary" : "primary"}
           >
             {category.name}
           </Button>
