@@ -1,35 +1,15 @@
-import styled, { css, keyframes } from "styled-components";
+import styled, { css } from "styled-components";
 import StarIcon from "./StarIcon";
 import theme from "../theme";
 
 type Props = {
   variant?: "primary" | "secondary";
-  isLoading?: boolean;
   children: React.ReactNode;
   favorite: boolean;
   onClick?: () => void;
 };
 
-const spin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const LoadingSpinner = styled.div`
-  width: 16px;
-  height: 16px;
-  border: 2px solid #ffffff;
-  border-top: 2px solid transparent;
-  border-radius: 50%;
-  animation: ${spin} 1s linear infinite;
-  margin-right: ${(props) => props.theme.spacing(1)};
-`;
-
-const StyledButton = styled.button<Props>`
+const StyledButton = styled.button<Omit<Props, "favorite">>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,27 +64,27 @@ const IconContainer = styled.span`
 const Button: React.FC<Props> = ({
   children,
   variant = "primary",
-  isLoading = false,
+  favorite = false,
   ...props
 }) => {
   return (
-    <StyledButton variant={variant} isLoading={isLoading} {...props}>
+    <StyledButton variant={variant} {...props}>
       {children}
-      {!isLoading && (
-        <IconContainer>
-          <StarIcon
-            stroke={variant === "primary" ? theme.colors.accent : theme.colors.primary}
-            fill={
-              props.favorite
-                ? variant === "primary"
-                  ? theme.colors.accent
-                  : theme.colors.primary
-                : "transparent"
-            }
-          />
-        </IconContainer>
-      )}
-      {isLoading && <LoadingSpinner />}
+
+      <IconContainer>
+        <StarIcon
+          stroke={
+            variant === "primary" ? theme.colors.accent : theme.colors.primary
+          }
+          fill={
+            favorite
+              ? variant === "primary"
+                ? theme.colors.accent
+                : theme.colors.primary
+              : "transparent"
+          }
+        />
+      </IconContainer>
     </StyledButton>
   );
 };
